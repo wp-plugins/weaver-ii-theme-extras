@@ -1,5 +1,5 @@
 === Weaver II Theme Extras ===
-Contributors: Bruce Wampler
+Contributors: wpweaver, Bruce Wampler
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: weaver theme, settings, save, subthemes
