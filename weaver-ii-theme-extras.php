@@ -5,7 +5,7 @@ Plugin URI: http://weavertheme.com
 Description: Weaver II Theme Extras
 Author: Bruce Wampler
 Author URI: http://weavertheme.com/about
-Version: 1.2.5
+Version: 1.3
 License: GPL
 
 GPL License: http://www.opensource.org/licenses/gpl-license.php
@@ -15,105 +15,7 @@ WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
-define ('WEAVER_MARKET',false);
-
-function weaverii_ex_saverestore(){
-    /* admin tab for saving and restoring theme */
-    $weaverii_theme_dir = weaverii_f_uploads_base_dir() .'weaverii-theme/';
-    $download_path = weaverii_relative_url('includes/download.php');
-    $download_img_path = weaverii_relative_url('images/icons/download.png');
-    $nonce = wp_create_nonce('wii_download');
-
-?>
-<h3 class="wvr-option-subheader" style="color:blue;">Save/Restore Current Theme Settings using Your Computer</h3>
-<p>This option allows you to save and restore all current theme settings by uploading and downloading to your
-own computer.</p>
-
-<h4>Download Current Settings To Your Computer</h4>
-
-<a href="<?php echo $download_path . '?_wpnonce=' . $nonce; ?>"><img src="<?php echo $download_img_path; ?>" />&nbsp; <strong>Download</strong>&nbsp;</a> - <strong><em>All</em></strong> current settings to file <strong>weaver-ii-backup-settings.w2b</strong> on your computer. (Full settings backup.)
-<br />
-<br />
-<a href="<?php echo $download_path . '?_wpnoncet=' . $nonce;?>"><img src="<?php echo $download_img_path; ?>" />&nbsp;<strong>Download</strong></a>&nbsp; - <strong><em>Only theme related</em></strong> current settings to file <strong>weaver-ii-theme-settings.w2t</strong> on your computer.
-<br />
-<br />
-<form enctype="multipart/form-data" action="<?php echo $_SERVER["REQUEST_URI"]; ?>" method="POST">
-	<table>
-            <tr><td><strong>Upload file saved on your computer</strong></td></tr>
-		<tr valign="top">
-			<td>Select theme/backup file to upload: <input name="uploaded" type="file" />
-			<input type="hidden" name="uploadit" value="yes" />&nbsp;(Restores to current settings.)
-                        </td>
-		</tr>
-                <tr><td><span class='submit'><input name="uploadtheme_ex" type="submit" value="Upload theme/backup" /></span>&nbsp;<small><strong>Upload and Restore</strong> a theme/backup from file on your computer. Will become current settings.</small></td></tr>
-                <tr><td>&nbsp;</td></tr>
-	</table>
-	<?php weaverii_nonce_field('uploadtheme_ex'); ?>
-    </form>
-<?php
-}
-
-function weaverii_ex_loadtheme() {
-    if (!(isset($_POST['uploadit']) && $_POST['uploadit'] == 'yes')) return;
-
-   // upload theme from users computer
-    // they've supplied and uploaded a file
-
-	$ok = true;     // no errors so far
-
-        if (isset($_FILES['uploaded']['name']))
-            $filename = $_FILES['uploaded']['name'];
-        else
-            $filename = "";
-
-        if (isset($_FILES['uploaded']['tmp_name'])) {
-            $openname = $_FILES['uploaded']['tmp_name'];
-        } else {
-            $openname = "";
-        }
-
-	//Check the file extension
-	$check_file = strtolower($filename);
-	$ext_check = end(explode('.', $check_file));
-
-
-	if ($filename == "") {
-	    $errors[] = "You didn't select a file to upload.<br />";
-	    $ok = false;
-	}
-
-	if ($ok && $ext_check != 'w2t' && $ext_check != 'w2b'){
-	    $errors[] = "Theme files must have <em>.w2t</em> or <em>.w2b</em> extension.<br />";
-	    $ok = false;
-	}
-
-        if ($ok) {
-            if (!weaverii_f_exists($openname)) {
-                $errors[] = '<strong><em style="color:red;">Sorry, there was a problem uploading your file.
-		You may need to check your folder permissions or other server settings.</em></strong>'.
-                    "<br />(Trying to use file '$openname')";
-                $ok = false;
-            }
-        }
-	if (!$ok) {
-	    echo '<div id="message" class="updated fade"><p><strong><em style="color:red;">ERROR</em></strong></p><p>';
-	    foreach($errors as $error){
-		echo $error.'<br />';
-	    }
-	    echo '</p></div>';
-	} else {    // OK - read file and save to My Saved Theme
-            // $handle has file handle to temp file.
-            $contents = file_get_contents($openname);
-
-            if (!weaverii_ex_set_current_to_serialized_values($contents,'weaverii_uploadit:'.$openname)) {
-                echo '<div id="message" class="updated fade"><p><strong><em style="color:red;">Sorry,
-		there was a problem uploading your file. The file you picked was not a valid
-		Weaver II theme file.</em></strong></p></div>';
-	    } else {
-                weaverii_save_msg('Weaver II theme options reset to uploaded theme.');
-            }
-        }
-}
+define ('WEAVER_MARKET',true);
 
 function weaverii_ex_set_current_to_serialized_values($contents)  {
     global $weaverii_opts_cache;	// need to mess with the cache
@@ -459,6 +361,11 @@ it raised before you proceed. This may involve contacting your hosting company.<
     weaverii_nonce_field('upload_theme');
 ?>
 </form>
+<br />
+<p>Note - using this Weaver II theme update tool will directly update your /wp-content/themes/weaver-ii/ or
+/wp-content/themes/weaver-ii-pro/ directory with the new version. Any files you may have added to one of those
+directories, such as a new language translation file, will not be removed. Thus, this provides an easy way to
+update Weaver II while retaining any new files you may have added.</p>
 <?php
      } else {
 	echo '<p>You must be an Admin or Super-Admin to update Weaver II.</p>';
