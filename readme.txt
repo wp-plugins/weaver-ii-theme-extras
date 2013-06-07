@@ -1,20 +1,15 @@
 === Weaver II Theme Extras ===
-Contributors: wpweaver, Bruce Wampler
+Contributors: Bruce Wampler
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: weaver theme, settings, save, subthemes
 Requires at least: 3.4
-Tested up to: 3.5
-Stable tag: 1.2
+Tested up to: 3.6
+Stable tag: 1.3
 
 == Description ==
 
 This plugin provides several enhancements for the Weaver II and Weaver II Pro themes.
-
-= Weaver II (free version) Save and Load Theme Settings =
-
-For the free version of Weaver II, this plugin allows you to save and load your theme settings on your own computer. A new option will appear on the Save/Restore tag when this theme is installed that lets you download your current settings to your
-your computer, and upload Weaver II theme settings files - either your own, or themes provided elsewhere.
 
 = Add-on Themes =
 
@@ -59,6 +54,9 @@ backup save are marked with a diamond in the admin options pages.
 
 
 == Changelog ==
+
+= 1.3 =
+* Save/Upload theme to your computer removed from plugin - now included in all Weaver II versions
 
 = 1.2 =
 
