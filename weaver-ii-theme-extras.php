@@ -2,10 +2,10 @@
 /*
 Plugin Name: Weaver II Theme Extras
 Plugin URI: http://weavertheme.com
-Description: Weaver II Theme Extras
+Description: Weaver II Theme Extras - Adds shortcodes and other features to the Weaver II theme.
 Author: Bruce Wampler
 Author URI: http://weavertheme.com/about
-Version: 1.3
+Version: 2.0
 License: GPL
 
 GPL License: http://www.opensource.org/licenses/gpl-license.php
@@ -14,6 +14,14 @@ This program is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
+
+$cur_theme = wp_get_theme();
+if ( strcmp($cur_theme->Name, 'Weaver II' ) == 0
+    ||
+    ( strcmp($cur_theme->Name, 'Weaver II Pro' ) == 0
+    && version_compare($cur_theme->Version, '1.9' , '<') ) ) {  // only need this for Weaver II free or old Pro
+
+/* PART 1 - Extras hooks - market, update */
 
 define ('WEAVER_MARKET',true);
 
@@ -29,7 +37,7 @@ function weaverii_ex_set_current_to_serialized_values($contents)  {
     $restore = array();
     $restore = unserialize(substr($contents,10));
 
-    if (!$restore) return weaverii_f_fail("Unserialize failed");
+    if (!$restore) return weaverii_f_fail("Unserialize failed - file likely corrupt.");
 
     $version = weaverii_getopt('wii_version_id');	// get something to force load
 
@@ -136,7 +144,7 @@ function weaverii_child_show_extrathemes_action() {
 <?php
     } else {
 ?>
-	<p>No Add-on Subthemes available.</p>
+	<p>You have not uploaded any Add-on Subthemes yet.</p>
 <?php
     }
 echo '<h3 class="wvr-option-subheader">Upload an Add-on Subtheme From Your Computer</h3>';
@@ -252,7 +260,8 @@ function weaverii_unpackzip($uploaded, $to_dir) {
 
     //Check the file extension
     $check_file = strtolower($filename);
-    $ext_check = end(explode('.', $check_file));
+    $exp = explode('.', $check_file);   // call by ref workaround
+    $ext_check = end($exp);
 
     if (false && !weaverii_f_file_access_available()) {
 	$errors[] = "Sorry - Weaver II unable to access files.<br />";
@@ -371,4 +380,80 @@ update Weaver II while retaining any new files you may have added.</p>
 	echo '<p>You must be an Admin or Super-Admin to update Weaver II.</p>';
      }
 }
+
+// ========================= FAVICON ======================
+
+add_action('weaverii_favicon','weaverii_favicon_action');
+function weaverii_favicon_action() {
+?>
+<div class="wvr-option-subheader"><span style="color:blue;font-size:larger;"><b>FavIcon</b></span></div><br />
+    <p>You can add a FavIcon to your site with this option. The preferred FavIcon is in the <code>.ico</code> format
+    which has the most universal browser compatibility. However, <code>.png, .gif, and .jpg</code> will
+    work for most modern browsers. The standard sizes are 16x16, 32x32, or 48x48 px. You can alternatively load
+    a <code>favicon.ico</code> file to the root directory of your site. &diams;</p>
+    <p>
+<?php
+    $icon=weaverii_getopt('_wii_favicon_url');
+    if ($icon != '') {
+	echo '<img src="' . $icon . '" alt="favicon" />&nbsp;';
+    }
+?>
+    <strong>FavIcon URL: </strong>
+    <textarea name="<?php weaverii_sapi_main_name('_wii_favicon_url'); ?>" id="_wii_favicon_url" rows=1 style="width: 350px"><?php echo(esc_textarea(weaverii_getopt('_wii_favicon_url'))); ?></textarea><?php weaverii_media_lib_button('_wii_favicon_url'); ?>&nbsp;&nbsp;Full path to FavIcon
+    </p><br />
+<?php
+}
+
+//============ facebook ==============
+add_action('weaverii_facebook','weaverii_facebook_action');
+function weaverii_facebook_action() {
+?>
+   <div class="wvr-option-subheader"><span style="color:blue;font-size:larger;"><b>Preferred Image for Facebook</b></span></div><br />
+    <p>Facebook and other sites will display a possibly arbitrarily chosen thumbnail for your site when it is used in a
+    link on those sites. If <em>you</em> specify an image to use here, then that image, plus other OpenGraph site information
+    for Facebook, will be added to your site's &lt;head&gt; using the proper &lt;meta&gt; tags. We recommend you do this as
+    it gives you control, and helps when someone links to your site on Facebook. (<em>Note: some SEO plugins will perform
+    this same function, so you might want to leave this blank and use the SEO features instead.</em>) Facebook says:
+    The image must be at least 50px by 50px, although a minimum 200px by 200px is preferred and 1500px by 1500px
+    is recommended for the best possible user experience. The image can have a maximum aspect ratio of 3:1.
+    (Note: image sizes must be no more than 5MB in size.) <small>After saving settings,
+    enter this site's URL on <?php weaverii_site('/tools/debug','http://developers.facebook.com'); ?>this page</a> to have Facebook update the information it saves for your site.</small> &diams;</p>
+    <p>
+
+<?php
+    $imgsrc = weaverii_getopt('_wii_imgsrc_url');
+    if ($imgsrc != '') {
+	echo '<img src="' . $imgsrc . '" height="40px" alt="imgsrc" />&nbsp;';
+    }
+?>
+<strong>Image URL: </strong>
+    <textarea name="<?php weaverii_sapi_main_name('_wii_imgsrc_url'); ?>" id="_wii_imgsrc_url" rows=1 style="width: 350px"><?php echo(esc_textarea(weaverii_getopt('_wii_imgsrc_url'))); ?></textarea><?php weaverii_media_lib_button('_wii_imgsrc_url'); ?>&nbsp;&nbsp;Full path to Site's preferred image
+    </p><br />
+<?php
+}
+
+/* PART 2 - Shortcodes */
+
+// check if we are running Weaver II 1.x
+
+if ( version_compare($cur_theme->Version, '1.8' , '>') ) {
+
+    function weaverii_extras_shortcodes_installed() {
+    return true;
+}
+
+function weaverii_ex_admin() {
+    require_once(dirname( __FILE__ ) . '/includes/weaverii-sc-basic.php');	// shortcode descriptions
+    require_once(dirname( __FILE__ ) . '/includes/wtx-admin-page.php');	// admin info
+
+    weaverii_tx_sc_admin();
+}
+
+add_action('weaverii_extras_info', 'weaverii_ex_admin');
+
+require_once(dirname( __FILE__ ) . '/includes/shortcodes.php');	// standard runtime library
+
+} // end not using Weaver II 1.x
+
+} // end of check if using Weaver II
 ?>
