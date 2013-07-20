@@ -3,13 +3,36 @@ Contributors: Bruce Wampler
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: weaver theme, settings, save, subthemes
-Requires at least: 3.4
+Requires at least: 3.5
 Tested up to: 3.6
-Stable tag: 1.3
+Stable tag: 2.0
 
 == Description ==
 
-This plugin provides several enhancements for the Weaver II and Weaver II Pro themes.
+This plugin provides several enhancements for the Weaver II theme.
+
+= Shortcode Support for Weaver II =
+
+Beginning with Weaver II 2.0, integrated shortcode support is no longer provide with the theme, but is included with this plugin. This version of the plugin remains compatible with previous versions of Weaver II Free and Weaver II Pro.
+
+Shortcodes supported include:
+
+    * Show Posts - [weaver_show_posts] - This shortcode allows you to display posts on any page or text area, and provides extensive filtering options. A perfect companion for the Page with Posts template. This shortcode is an essential part of building sites with Weaver II.
+    * Breadcrumbs - [weaver_breadcrumbs]
+    * Header Image - [weaver_header_image]
+    * HTML - [weaver_html]
+    * DIV - [div]text[/div]
+    * SPAN - [span]text[/span]
+    * iFrame - [weaver_iframe]
+    * Blog Page Navigation - [weaver_pagenav]
+    * Show If Mobile - [weaver_show_if_mobile]
+    * Hide If Mobile - [weaver_hide_if_mobile]
+    * Show If Logged In - [weaver_show_if_logged_in]
+    * Hide If Logged In - [weaver_hide_if_logged_in]
+    * Site Title - [weaver_site_title]
+    * Site Tagline - [weaver_site_desc]
+    * Vimeo - [weaver_vimeo]
+    * YouTube - [weaver_youtube]
 
 = Add-on Themes =
 
@@ -54,6 +77,10 @@ backup save are marked with a diamond in the admin options pages.
 
 
 == Changelog ==
+
+= 2.0 =
+* Added Weaver II shortcode support via this plugin
+* No longer needed for Weaver II Pro - all support now automatically integrated to Weaver II Pro.
 
 = 1.3 =
 * Save/Upload theme to your computer removed from plugin - now included in all Weaver II versions
