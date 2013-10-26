@@ -5,7 +5,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: weaver theme, settings, save, subthemes
 Requires at least: 3.5
 Tested up to: 3.6
-Stable tag: 2.0.1
+Stable tag: 2.1
 
 == Description ==
 
@@ -77,6 +77,9 @@ backup save are marked with a diamond in the admin options pages.
 
 
 == Changelog ==
+
+= 2.1 =
+* Added support for Weaver II Pro
 
 = 2.0 =
 * Added Weaver II shortcode support via this plugin
