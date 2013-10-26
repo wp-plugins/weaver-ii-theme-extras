@@ -5,7 +5,7 @@ Plugin URI: http://weavertheme.com
 Description: Weaver II Theme Extras - Adds shortcodes and other features to the Weaver II theme.
 Author: Bruce Wampler
 Author URI: http://weavertheme.com/about
-Version: 2.0.1
+Version: 2.1
 License: GPL
 
 GPL License: http://www.opensource.org/licenses/gpl-license.php
@@ -15,7 +15,7 @@ WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
-define ('WEAVER_II_EXTRAS_VERSION','Weaver II Extras Version 2.0.1');
+define ('WEAVER_II_EXTRAS_VERSION','Weaver II Extras Version 2.1');
 
 $cur_theme = wp_get_theme();
 $parent = $cur_theme->parent(); // might be a child, so see if Weaver II is parent...
@@ -24,7 +24,8 @@ if ($parent)
 if ( strcmp($cur_theme->Name, 'Weaver II' ) == 0
     ||
     ( strcmp($cur_theme->Name, 'Weaver II Pro' ) == 0
-    && version_compare($cur_theme->Version, '1.9' , '<') ) ) {  // only need this for Weaver II free or old Pro
+    && (version_compare($cur_theme->Version, '1.9' , '<')
+        || version_compare($cur_theme->Version, '2.0.90' , '>='))) ) {  // only need this for Weaver II free or old Pro
 
 /* PART 1 - Extras hooks - market, update */
 
@@ -455,6 +456,12 @@ function weaverii_ex_admin() {
 }
 
 add_action('weaverii_extras_info', 'weaverii_ex_admin');
+
+function weaverii_ex_load_descriptions_action() {
+    require_once(dirname( __FILE__ ) . '/includes/weaverii-sc-basic.php');	// shortcode descriptions
+}
+
+add_action('weaverii_ex_load_descriptions', 'weaverii_ex_load_descriptions_action');
 
 function weaverii_ex_wphead() {
     printf("\n<!-- %s -->\n",WEAVER_II_EXTRAS_VERSION);
