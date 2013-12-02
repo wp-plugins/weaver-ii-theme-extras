@@ -37,8 +37,8 @@ name with 'header_class=classname'. You can provide inline styling with 'header_
 	    'orderby' => 'date',		/* author | date | title | rand | modified | parent {date} (orderby) */
 	    'sort' => 'DESC',			/* ASC | DESC {DESC} (order)*/
 	    'number' => '5',			/* number of posts to show  {5} (posts_per_page)*/
-            'paged' => false,			/* use paging? */
-            'nth' => '0',			/* show just the nth post that matches other criteria */
+        'paged' => false,			/* use paging? */
+        'nth' => '0',			/* show just the nth post that matches other criteria */
 	    /* formatting options */
 	    'show' => 'full',			/* show: title | excerpt | full | titlelist  */
 	    'hide_title' => '',			/* hide the title? */
@@ -64,7 +64,7 @@ name with 'header_class=classname'. You can provide inline styling with 'header_
 
     /* Setup query arguments using the supplied args */
     $qargs = array(
-	'ignore_sticky_posts' => 1
+        'ignore_sticky_posts' => 1
     );
 
     $qargs['orderby'] = $orderby;	/* enter opts that have defaults first */
@@ -116,7 +116,7 @@ name with 'header_class=classname'. You can provide inline styling with 'header_
     if (!empty($header_style)) $h_add = ' style="' . $header_style . '"';
 
     if (!empty($header)) {
-	$content .= '<div class="wvr-show-posts-header ' . $header_class . '"' . $h_add . '>' . $header . '</div>';
+        $content .= '<div class="wvr-show-posts-header ' . $header_class . '"' . $h_add . '>' . $header . '</div>';
     }
 
     ob_start();	// use built-in weaver code to generate a weaver standard post
@@ -127,32 +127,32 @@ name with 'header_class=classname'. You can provide inline styling with 'header_
     $posts_out = 0;
 
     if ($paged && $ourposts->have_posts()) {		// top paging?
-	global $wp_query;
-	$wp_query = $ourposts;
-	weaverii_content_nav( 'nav-above' );
+        global $wp_query;
+        $wp_query = $ourposts;
+        weaverii_content_nav( 'nav-above' );
     }
 
     while ( $ourposts->have_posts() ) {
-	$ourposts->the_post();
-	weaverii_post_count_bump();
-	$weaverii_cur_post_id = get_the_ID();
-        $posts_out++;
-	if ($nth != 0) {
-	    if ($posts_out < $nth)
-		continue;
-	    if ($posts_out > $nth)
-		break;			// all done...
-	}
+        $ourposts->the_post();
+        weaverii_post_count_bump();
+        $weaverii_cur_post_id = get_the_ID();
+            $posts_out++;
+        if ($nth != 0) {
+            if ($posts_out < $nth)
+                continue;
+            if ($posts_out > $nth)
+                break;			// all done...
+        }
 
-	// weaverii_per_post_style();
-	if ($show == 'titlelist') {
-?>
-	    <li><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr(__( 'Permalink to %s','weaver-ii')),
-	   the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></li>
-<?php
-	} else {
-	    get_template_part( 'content', get_post_format() );
-	}
+        // weaverii_per_post_style();
+        if ($show == 'titlelist') {
+    ?>
+            <li><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr(__( 'Permalink to %s','weaver-ii')),
+           the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></li>
+    <?php
+        } else {
+            get_template_part( 'content', get_post_format() );
+        }
 
     } // end loop
     if ($show == 'titlelist') echo "</ul>\n";
@@ -174,12 +174,11 @@ name with 'header_class=classname'. You can provide inline styling with 'header_
 		</div><!-- #entry-author-info -->
 <?php
     }
-    if ($clear) echo "\t<div class=\"weaver-clear\"></div>\n";
-
+    echo "<div class=\"weaver-clear\"></div>\n";
     if ($paged && $ourposts->have_posts()) {
-	global $wp_query;
-	$wp_query = $ourposts;
-	weaverii_content_nav( 'nav-below' );
+        global $wp_query;
+        $wp_query = $ourposts;
+        weaverii_content_nav( 'nav-below' );
     }
 
     $content .= ob_get_clean();	// get the output
@@ -187,6 +186,7 @@ name with 'header_class=classname'. You can provide inline styling with 'header_
     // get posts
 
     $content .= '</div><!-- #wvr-show-posts -->';
+    if ($clear) $content .= "<div class=\"weaver-clear\"></div>\n";
     wp_reset_query();
     wp_reset_postdata();
 
@@ -200,7 +200,7 @@ name with 'header_class=classname'. You can provide inline styling with 'header_
 add_shortcode('weaver_show_posts', 'weaverii_show_posts_shortcode');
 
 // ===============  [weaver_header_image style='customstyle'] ===================
-function weaverii_sc_header_image($args = ''){
+function weaverii_sc_header_image($args = '') {
     extract(shortcode_atts(array(
 	    'style' => '',	// STYLE
 	    'h' => '',
@@ -212,11 +212,11 @@ function weaverii_sc_header_image($args = ''){
     $st = $style ? ' style="' . $style . '"' : '';
 
     if (weaverii_use_mobile('mobile') && weaverii_getopt('_wii_mobile_header_url')) {
-	$hdrimg = '<img src="' . esc_attr(apply_filters('weaverii_css',weaverii_getopt('_wii_mobile_header_url'))) .
-	    '" width="100%" alt="' . esc_attr( get_bloginfo( 'name', 'display' ) ) . '" ' .  $st . $width . $height . ' />' ;
+        $hdrimg = '<img src="' . esc_attr(apply_filters('weaverii_css',weaverii_getopt('_wii_mobile_header_url'))) .
+            '" width="100%" alt="' . esc_attr( get_bloginfo( 'name', 'display' ) ) . '" ' .  $st . $width . $height . ' />' ;
     } else {
-	$hdrimg = '<img src="' . get_header_image() . '"' . $st . $width . $height
-	 . ' alt="' . esc_attr( get_bloginfo( 'name', 'display' ) ) . '" />' ;
+        $hdrimg = '<img src="' . get_header_image() . '"' . $st . $width . $height
+            . ' alt="' . esc_attr( get_bloginfo( 'name', 'display' ) ) . '" />' ;
     }
     return $hdrimg;
 }
@@ -243,7 +243,7 @@ function weaverii_sc_site_title($args = '') {
 		? esc_html(weaverii_getopt('_wii_mobile_site_title')) : esc_attr( get_bloginfo( 'name', 'display' ) );
 
     if ($style) {
-	return '<span style="' . $style . '">' . $title . '</span>';
+        return '<span style="' . $style . '">' . $title . '</span>';
     }
     return $title;
 
@@ -253,13 +253,13 @@ add_shortcode('weaver_site_title', 'weaverii_sc_site_title');
 
 // ===============  [weaver_site_title style='customstyle'] ======================
 function weaverii_sc_site_desc($args = '') {
-    extract(shortcode_atts(array(
-	    'style' => ''		/* styling for the header */
-    ), $args));
+    extract(shortcode_atts( array(
+                            'style' => ''		/* styling for the header */
+                            ), $args));
     $title = get_bloginfo( 'description' );
 
     if ($style) {
-	return '<span style="' . $style . '">' . $title . '</span>';
+        return '<span style="' . $style . '">' . $title . '</span>';
     }
     return $title;
 }
@@ -275,7 +275,7 @@ function weaverii_sc_breadcrumbs($args = '') {
     $title = weaverii_breadcrumb(false, $class);
 
     if ($style) {
-	return '<span style="' . $style . '">' . $title . '</span>';
+        return '<span style="' . $style . '">' . $title . '</span>';
     }
     return $title;
 
@@ -297,7 +297,7 @@ function weaverii_sc_pagenav($args = '') {
     if (!$title) return $error_msg;
 
     if ($style) {
-	return '<span style="' . $style . '">' . $title . '</span>';
+        return '<span style="' . $style . '">' . $title . '</span>';
     }
     return $title;
 }
@@ -328,14 +328,14 @@ function weaverii_sc_show_if_mobile($args = '',$text) {
     ), $args));
 
     if ( weaverii_smart_mode() ) {
-	if ( weaverii_use_mobile($type) ) {
-	    return do_shortcode($text);
-	} else {
-	    return '';
-	}
+        if ( weaverii_use_mobile($type) ) {
+            return do_shortcode($text);
+        } else {
+            return '';
+        }
     } else {
-	if ($type == 'touch') $type = 'mobile';
-	return '<span class="wvr-show-mobile-' . $type . '">' . do_shortcode($text) . '</span>';
+        if ($type == 'touch') $type = 'mobile';
+        return '<span class="wvr-show-mobile-' . $type . '">' . do_shortcode($text) . '</span>';
     }
 
     return '';
@@ -349,14 +349,14 @@ function weaverii_sc_hide_if_mobile($args = '',$text) {
     ), $args));
 
     if ( weaverii_smart_mode() ) {
-	if ( !weaverii_use_mobile($type) ) {
-	    return do_shortcode($text);
-	} else {
-	    return '';
-	}
+        if ( !weaverii_use_mobile($type) ) {
+            return do_shortcode($text);
+        } else {
+            return '';
+        }
     } else {
-	if ($type == 'touch') $type = 'mobile';
-	return '<span class="wvr-hide-mobile-' . $type . '">' . do_shortcode($text) . '</span>';
+        if ($type == 'touch') $type = 'mobile';
+        return '<span class="wvr-hide-mobile-' . $type . '">' . do_shortcode($text) . '</span>';
     }
 
     return '';
@@ -368,7 +368,7 @@ add_shortcode('weaver_hide_if_mobile', 'weaverii_sc_hide_if_mobile');
 function weaverii_sc_show_if_logged_in($args = '',$text) {
 
     if (is_user_logged_in()) {
-	return do_shortcode($text);
+        return do_shortcode($text);
     }
     return '';
 }
@@ -378,7 +378,7 @@ add_shortcode('weaver_show_if_logged_in', 'weaverii_sc_show_if_logged_in');
 function weaverii_sc_hide_if_logged_in($args = '',$text) {
 
     if (!is_user_logged_in()) {
-	return do_shortcode($text);
+        return do_shortcode($text);
     }
     return '';
 }
@@ -389,58 +389,58 @@ add_shortcode('weaver_hide_if_logged_in', 'weaverii_sc_hide_if_logged_in');
 function weaverii_sc_youtube($args = '') {
     $share = '';
     if ( isset ( $args[0] ) )
-	$share = trim($args[0]);
+        $share = trim($args[0]);
 
     // http://code.google.com/apis/youtube/player_parameters.html
     // not including: enablejsapi, fs,playerapiid,
 
     extract(shortcode_atts(array(
-	'id' => '',
-	'sd' => false,
-	'related' => '0',
-	'https' => false,
-	'privacy' => false,
-	'w' => 0,
-	'h' => 0,
-	'ratio' => false,
-	'center' => '1',
-	'autohide' => '1',
-	'autoplay' => '0',
-	'border' => '0',
-	'color' => false,
-	'color1' => false,
-	'color2' => false,
-	'controls' => '1',
-	'disablekb' => '0',
-	'egm' => '0',
-	'fs' => '1',
-	'fullscreen' => 1,
-	'hd' => '0',
-	'iv_load_policy' => '1',
-	'loop' => '0',
-	'modestbranding' => '0',
-	'origin' => false,
-	'percent' => 100,
-	'playlist' => false,
-	'rel' => '0',
-	'showinfo' => '1',
-	'showsearch' => '1',
-	'start' => false,
-	'theme' => 'dark',
-	'wmode' => 'transparent'
+        'id' => '',
+        'sd' => false,
+        'related' => '0',
+        'https' => false,
+        'privacy' => false,
+        'w' => 0,
+        'h' => 0,
+        'ratio' => false,
+        'center' => '1',
+        'autohide' => '1',
+        'autoplay' => '0',
+        'border' => '0',
+        'color' => false,
+        'color1' => false,
+        'color2' => false,
+        'controls' => '1',
+        'disablekb' => '0',
+        'egm' => '0',
+        'fs' => '1',
+        'fullscreen' => 1,
+        'hd' => '0',
+        'iv_load_policy' => '1',
+        'loop' => '0',
+        'modestbranding' => '0',
+        'origin' => false,
+        'percent' => 100,
+        'playlist' => false,
+        'rel' => '0',
+        'showinfo' => '1',
+        'showsearch' => '1',
+        'start' => false,
+        'theme' => 'dark',
+        'wmode' => 'transparent'
 
     ), $args));
 
     if (!$share && !$id) return '<strong>No share or id values provided for weaver_youtube shortcode.</strong>';
     if ($h != 0 || $w != 0) return '<strong>[weaver_youtube]: Height (h) and Width (w) no longer supported - use percent instead.</strong>';
     if ($share)	{	// let the share override any id
-	$share = str_replace('http://youtu.be/','',$share);
-	if (strpos($share,'youtube.com/watch') !== false) {
-	    $share = str_replace('http://www.youtube.com/watch?v=', '', $share);
-	    $share = str_replace('&amp;','+',$share);
-	    $share = str_replace('&','+',$share);
-	}
-	if ($share) $id = $share;
+        $share = str_replace('http://youtu.be/','',$share);
+        if (strpos($share,'youtube.com/watch') !== false) {
+            $share = str_replace('http://www.youtube.com/watch?v=', '', $share);
+            $share = str_replace('&amp;','+',$share);
+            $share = str_replace('&','+',$share);
+        }
+        if ($share) $id = $share;
     }
 
     $opts = $id . '%%';
@@ -497,30 +497,30 @@ add_shortcode('weaver_youtube', 'weaverii_sc_youtube');
 function weaverii_sc_vimeo($args = '') {
     $share = '';
     if ( isset ( $args[0] ) )
-	$share = trim($args[0]);
+        $share = trim($args[0]);
 
     extract(shortcode_atts(array(
-	'id' => '',
-	'sd' => false,
-	'color' => '',
-	'autoplay' => false,
-	'loop' => false,
-	'portrait' => true,
-	'title' => true,
-	'byline' => true,
-	'w' => 0,
-	'h' => 0,
-	'ratio' => false,
-	'percent' => 100,
-	'center' => '1'
+        'id' => '',
+        'sd' => false,
+        'color' => '',
+        'autoplay' => false,
+        'loop' => false,
+        'portrait' => true,
+        'title' => true,
+        'byline' => true,
+        'w' => 0,
+        'h' => 0,
+        'ratio' => false,
+        'percent' => 100,
+        'center' => '1'
     ), $args));
 
     if (!$share && !$id) return '<strong>No share or id values provided for weaver_vimeo shortcode.</strong>';
     if ($h != 0 || $w != 0) return '<strong>[weaver_vimeo]: Height (h) and Width (w) no longer supported - use percent instead.</strong>';
 
     if ($share)	{	// let the share override any id
-	$share = str_replace('http://vimeo.com/','',$share);
-	if ($share) $id = $share;
+        $share = str_replace('http://vimeo.com/','',$share);
+        if ($share) $id = $share;
     }
 
     $opts = $id . '##';
@@ -557,22 +557,20 @@ add_shortcode('weaver_vimeo', 'weaverii_sc_vimeo');
 
 function weaverii_add_url_opt($opts, $add, $add_val) {
     if ($add) {
-	$opts = $opts . '+' . $add_val;
+        $opts = $opts . '+' . $add_val;
     }
     return $opts;
 }
-
-
 
 // ===============  [html style='customstyle'] ======================
 
 function weaverii_sc_html($vals = '') {
     $tag = 'span';
     if ( isset ( $vals[0] ) )
-	$tag = trim( $vals[0]);
+        $tag = trim( $vals[0]);
 
     extract(shortcode_atts(array(
-	'args' => ''
+        'args' => ''
     ), $vals));
     if ($args) $args = ' ' . $args;
     return '<' . $tag . $args .  '>';
@@ -582,9 +580,9 @@ add_shortcode('weaver_html', 'weaverii_sc_html');
 
 function weaverii_sc_div($vals = '',$text) {
     extract(shortcode_atts(array(
-	'id' => '',
-	'class' => '',
-	'style' => ''
+        'id' => '',
+        'class' => '',
+        'style' => ''
     ), $vals));
 
     $args = '';
@@ -599,9 +597,9 @@ add_shortcode('div', 'weaverii_sc_div');
 
 function weaverii_sc_span($vals = '',$text) {
     extract(shortcode_atts(array(
-	'id' => '',
-	'class' => '',
-	'style' => ''
+        'id' => '',
+        'class' => '',
+        'style' => ''
     ), $vals));
 
     $args = '';
@@ -621,7 +619,7 @@ function weaverii_sc_info() {
 
     get_currentuserinfo();
     if (isset($current_user->display_name)) {
-	$out .= '<em>User:</em> ' . $current_user->display_name . '<br />';
+        $out .= '<em>User:</em> ' . $current_user->display_name . '<br />';
     }
     $out .= '&nbsp;&nbsp;' . wp_register('','<br />',false);
     $out .= '&nbsp;&nbsp;' . wp_loginout('',false) . '<br />';
@@ -631,7 +629,7 @@ function weaverii_sc_info() {
     $out .= '<em>Browser:</em> ' . ($device ? $device['browser'] . '/' . $device['type'] .'/'.$device['os'] : 'Non-Mobile Browser') . '<br />';
     $agent = 'Not Available';
     if (isset($_SERVER["HTTP_USER_AGENT"]) )
-	$agent = $_SERVER['HTTP_USER_AGENT'];
+        $agent = $_SERVER['HTTP_USER_AGENT'];
     $out .= '<em>User Agent</em>: <small>' . $agent . '</small>';
     $out .= '<div id="example"></div>
 <script type="text/javascript">
@@ -653,9 +651,9 @@ document.getElementById("example").innerHTML=txt;
 </script>';
 
     if (!weaverii_use_inline_css( weaverii_get_css_filename() ))
-	$out .= '<em>Using CSS file:</em> ' . weaverii_get_css_filename();
+        $out .= '<em>Using CSS file:</em> ' . weaverii_get_css_filename();
     else
-	$out .= '<em>Using Inline CSS</em>';
+        $out .= '<em>Using Inline CSS</em>';
 
     $out .= '<br /><em>Mobile Mode: </em> ' . weaverii_getopt('_wii_mode_mobile');
 
@@ -667,4 +665,44 @@ document.getElementById("example").innerHTML=txt;
 }
 
 add_shortcode('weaver_info', 'weaverii_sc_info');
+
+// ADD Quick Cache support...
+function weaverii_sc_check_quick_cache() {
+    if (!current_user_can('edit_theme_options'))
+        return '';  // fail quietly
+
+    if ( isset($GLOBALS['quick_cache__advanced_cache']) )
+        $ac = $GLOBALS['quick_cache__advanced_cache'];
+    else
+        return '';
+
+    $ac_dir = WP_CONTENT_DIR . '/ac-plugins';
+    if ( !is_dir( $ac_dir) ) {          // need to create the ac directory...
+        mkdir($ac_dir, 0755, TRUE);
+    }
+
+    $ac_file = $ac_dir . '/weaver-ac-plugin.php';
+
+    if (!is_writable($ac_dir))
+        return $ac_dir . 'not writable.';
+
+    if ( is_file($ac_file) )
+        return ''; // Already created...
+
+
+    $ac_template = dirname(__FILE__).'/weaver-ac-plugin.php';
+
+    if(!is_file($ac_template) || !is_readable($ac_template))
+        return $ac_template . ' template file not found'; // Template file is missing; or not readable.
+
+    if(!($ac_contents = file_get_contents($ac_template)))
+        return $ac_template . ' template file not readable';; // Template file is missing; or is not readable.
+
+
+    if(!file_put_contents($ac_file, $ac_contents))
+        return ' unable to create file: ' . $ac_file; // Failure; could not write file.
+
+    return ''; // All done :-)
+}
+
 ?>

@@ -4,8 +4,8 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: weaver theme, settings, save, subthemes
 Requires at least: 3.5
-Tested up to: 3.6
-Stable tag: 2.1
+Tested up to: 3.7
+Stable tag: 2.1.2
 
 == Description ==
 
@@ -49,6 +49,12 @@ While that will still work, you can now update Weaver II Pro (or even Weaver II 
 WeaverTheme.com) easily from the download using this Theme Extras plugin. There is a new option added near
 the bottom of the Save/Restore admin tab that will let you easily and quickly upgrade Weaver II Pro.
 
+= Quick Cache Support =
+
+Beginning with version 2.1.1, Weaver II Theme Extras adds automatic support for the latest version of Quick
+Cache. Weaver II + Quick Cache will now work together automatically to cache all visits, including desktops
+and all mobile devices.
+
 == Installation ==
 
 It is easiest to use the Plugin Add Plugin page, but you can do it manually, too:
@@ -78,12 +84,18 @@ backup save are marked with a diamond in the admin options pages.
 
 == Changelog ==
 
+== 2.1.2 ==
+* Added automatic support for Quick Cache
+* Refactored some code to load only at admin time
+
+= 2.1.1 =
+* Fixed clear=1 option for [weaver_show_posts]
+
 = 2.1 =
 * Added support for Weaver II Pro
 
 = 2.0 =
 * Added Weaver II shortcode support via this plugin
-* No longer needed for Weaver II Pro - all support now automatically integrated to Weaver II Pro.
 
 = 1.3 =
 * Save/Upload theme to your computer removed from plugin - now included in all Weaver II versions
