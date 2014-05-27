@@ -38,9 +38,10 @@ name with 'header_class=classname'. You can provide inline styling with 'header_
 	    'sort' => 'DESC',			/* ASC | DESC {DESC} (order)*/
 	    'number' => '5',			/* number of posts to show  {5} (posts_per_page)*/
         'paged' => false,			/* use paging? */
+        'sticky' => false,          // show sticky?
         'nth' => '0',			/* show just the nth post that matches other criteria */
 	    /* formatting options */
-	    'show' => 'full',			/* show: title | excerpt | full | titlelist  */
+	    'show' => 'full',			/* show: title | title_featured | excerpt | full | titlelist  */
 	    'hide_title' => '',			/* hide the title? */
 	    'hide_top_info' => '',		/* hide the top info line */
 	    'hide_bottom_info' => '',		/* hide bottom info line */
@@ -76,6 +77,7 @@ name with 'header_class=classname'. You can provide inline styling with 'header_
     if (!empty($author)) $qargs['author_name'] = $author;
     if (!empty($author_id)) $qargs['author'] = $author_id;
     if (!empty($post_type)) $qargs['post_type'] = $post_type;
+    if (!empty($sticky) && $sticky) $qargs['ignore_sticky_posts'] = 0;
 
     weaverii_sc_reset_opts();
 
@@ -88,7 +90,14 @@ name with 'header_class=classname'. You can provide inline styling with 'header_
     if ($hide_bottom_info != '') weaverii_sc_setopt('hide_bottom_info',true);
     if ($show_featured_image != '') weaverii_sc_setopt('show_featured_image',true);
     if ($hide_featured_image != '') weaverii_sc_setopt('hide_featured_image',true);
-    if ($show_avatar != '') weaverii_sc_setopt('show_avatar',true); else weaverii_sc_setopt('show_avatar','no');
+    if ( isset($args['show_avatar'])) {
+        if ($show_avatar) {
+            weaverii_sc_setopt('show_avatar', true);
+        } else {
+            weaverii_sc_setopt('show_avatar','no');
+        }
+    }
+
     if ($excerpt_length != '') weaverii_sc_setopt('excerpt_length',$excerpt_length);
     if ($more_msg != '') weaverii_sc_setopt('more_msg',$more_msg);
 
@@ -415,7 +424,7 @@ function weaverii_sc_youtube($args = '') {
         'egm' => '0',
         'fs' => '1',
         'fullscreen' => 1,
-        'hd' => '0',
+        // 'hd' => '1',
         'iv_load_policy' => '1',
         'loop' => '0',
         'modestbranding' => '0',
@@ -432,7 +441,18 @@ function weaverii_sc_youtube($args = '') {
     ), $args));
 
     if (!$share && !$id) return '<strong>No share or id values provided for weaver_youtube shortcode.</strong>';
-    if ($h != 0 || $w != 0) return '<strong>[weaver_youtube]: Height (h) and Width (w) no longer supported - use percent instead.</strong>';
+
+    if ( $w == 0 ) {
+        $w = $sd ? 640 : 1280;
+    }
+    if ( $h == 0 ) {
+        $h = $sd ? 480 : 720;
+    }
+    if ( $ratio )
+        $h = $w * $ratio;
+
+    $GLOBALS['wvr_videos_count'] = true;
+
     if ($share)	{	// let the share override any id
         $share = str_replace('http://youtu.be/','',$share);
         if (strpos($share,'youtube.com/watch') !== false) {
@@ -445,7 +465,7 @@ function weaverii_sc_youtube($args = '') {
 
     $opts = $id . '%%';
 
-    $opts = weaverii_add_url_opt($opts, $hd != '0', 'hd=1');
+    // $opts = weaverii_add_url_opt($opts, $hd != '0', 'hd=1');
     $opts = weaverii_add_url_opt($opts, $autohide != '2', 'autohide='.$autohide);
     $opts = weaverii_add_url_opt($opts, $autoplay != '0', 'autoplay=1');
     $opts = weaverii_add_url_opt($opts, $border != '0', 'border=1');
@@ -479,16 +499,17 @@ function weaverii_sc_youtube($args = '') {
 
     $url .= '/embed/' . $opts;
 
-    $vert = $sd ? 0.75 : 0.5625;
+    // $vert = $sd ? 0.75 : 0.5625;
     if ($ratio) $vert = $ratio;
     if (weaverii_use_mobile('mobile') && $percent < 90) $percent = 99;
 
     $allowfull = $fullscreen ? ' allowfullscreen' : '';
-    $cntr1 = $center ? '<div style="text-align:center">' : '';
-    $cntr2 = $center ? '</div>' : '';
+    $cntr1 = $center ? '<div class="wvr-fitvids" style="text-align:center;max-width:' . $percent . '%;">'
+                     : '<div class="wvr-fitvids" max-width:' . $percent . '%;">';
+    $cntr2 = '</div>';
 
     return "\n" . $cntr1 . '<iframe src="' . $url
-     . '" frameborder="0" width="'.$percent.'%" height="0" onload="weaverii_fixVideo(this,'.$vert.');" onresize="weaverii_fixVideo(this,'.$vert.');"></iframe>'
+     . '" width="' . $w . '" height="' . $h . '" frameborder="0"' . $allowfull . '></iframe>'
      . $cntr2 . "\n";
 }
 add_shortcode('weaver_youtube', 'weaverii_sc_youtube');
@@ -516,7 +537,18 @@ function weaverii_sc_vimeo($args = '') {
     ), $args));
 
     if (!$share && !$id) return '<strong>No share or id values provided for weaver_vimeo shortcode.</strong>';
-    if ($h != 0 || $w != 0) return '<strong>[weaver_vimeo]: Height (h) and Width (w) no longer supported - use percent instead.</strong>';
+
+    if ( $w == 0 ) {
+        $w = $sd ? 640 : 1280;
+    }
+    if ( $h == 0 ) {
+        $h = $sd ? 480 : 720;
+    }
+    if ( $ratio )
+        $h = $w * $ratio;
+
+    $GLOBALS['wvr_videos_count'] = true;
+
 
     if ($share)	{	// let the share override any id
         $share = str_replace('http://vimeo.com/','',$share);
@@ -542,13 +574,14 @@ function weaverii_sc_vimeo($args = '') {
 
     if (weaverii_use_mobile('mobile')) $percent = 100;
 
-    $vert = $sd ? 0.75 : 0.5625;
-    if ($ratio) $vert = $ratio;
-    $cntr1 = $center ? '<div style="text-align:center">' : '';
-    $cntr2 = $center ? '</div>' : '';
+    // $vert = $sd ? 0.75 : 0.5625;
+    // if ($ratio) $vert = $ratio;
+    $cntr1 = $center ? '<div class="wvr-fitvids" style="text-align:center;max-width:' . $percent. '%;">'
+                     : '<div class="wvr-fitvids" style="max-width:' . $percent. '%;">';
+    $cntr2 = '</div>';
 
     return "\n" . $cntr1 . '<iframe src="' . $url
-     . '" width="'.$percent.'%" height="0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen onload="weaverii_fixVideo(this,'.$vert.');" onresize="weaverii_fixVideo(this,'.$vert.');"></iframe>'
+     . '" width="'. $w . '" height="' . $h . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>'
      . $cntr2 . "\n";
 }
 add_shortcode('weaver_vimeo', 'weaverii_sc_vimeo');

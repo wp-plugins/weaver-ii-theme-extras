@@ -158,14 +158,15 @@ function weaveriip_video_admin() {
 ?>
 <br /><label><span style="color:blue;font-weight:bold; font-size: larger;"><b>YouTube - [weaver_youtube]</b></span></label>
 <br />
-<p>Weaver II supports specialized shortcodes to display video. While there are other ways to embed video, the Weaver II versions have two important features. First, they will auto adjust to the width of your content, <em><strong>including</strong></em> the mobile view. Second, they use the latest iframe/HTML5 interface provided by YouTube and Vimeo.</p>
+<p>Weaver II supports specialized shortcodes to display video. While there are other ways to embed video, the Weaver II versions have two important features. First, they will auto adjust to the width of your content, <em><strong>including</strong></em> the mobile view. Second, they use the latest iframe/HTML5 interface provided by YouTube and Vimeo. Both the YouTube and Vimeo shortcodes assume your video will be 16:9 HD aspect ratio unless you
+specify sd=1..</p>
 <h4>Vimeo</h4>
-<strong>Shortcode usage:</strong> <code>[weaver_vimeo vimeo-url id=videoid sd=0 percent=100 ratio=.5625 center=1 color=#hex autoplay=0 loop=0 portrait=1 title=1 byline=1]</code>
+<strong>Shortcode usage:</strong> <code>[weaver_vimeo vimeo-url <em>or</em> id=videoid sd=0 percent=100 center=1 color=#hex autoplay=0 loop=0 portrait=1 title=1 byline=1]</code>
 
-<p>This will display Vimeo videos. At the minimum, you can provide the standard http://vimeo.com/nnnnn link, or just the video ID number (which is part of the Vimeo Link). The other options are explained in the Help document</p>
+<p>This will display Vimeo videos. At the minimum, you can provide the standard http://vimeo.com/nnnnn link, or just the video ID number (which is part of the Vimeo Link). Don't provide both! The other options are explained in the Help document</p>
 <h4>YouTube</h4>
-<strong>Shortcode usage:</strong> <code>[weaver_youtube youtube-url id=videoid sd=0 percent=100 ratio=.5625 center=1 rel=0 https=0 privacy=0  see_help_for_others]</code>
-<p>This will display YouTube videos. At the minimum, you can provide the standard http://youtu.be/xxxxxx share link (including the options YouTube lets you specify), the long format share link, or just the video ID number (which is part of the YouTube Link). The other options are explained in the Help document</p>
+<strong>Shortcode usage:</strong> <code>[weaver_youtube youtube-url <em>or</em> id=videoid sd=0 percent=100 center=1 rel=0 https=0 privacy=0  see_help_for_others]</code>
+<p>This will display YouTube videos. At the minimum, you can provide the standard http://youtu.be/xxxxxx share link (including the options YouTube lets you specify), the long format share link, <strong>OR</strong> just the video ID number (which is part of the YouTube Link) Don't provide both! The other options are explained in the Help document</p>
 
 <?php
 }

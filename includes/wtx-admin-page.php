@@ -336,7 +336,7 @@ function weaverii_favicon_action() {
 ?>
     <div class="wvr-option-subheader"><span style="color:blue;font-size:larger;"><b>Quick Cache Support</b></span></div><br />
 <?php
-    if ( isset($GLOBALS['quick_cache__advanced_cache'] ) ) {
+    if ( isset($GLOBALS['quick_cache'] ) || isset($GLOBALS['quick_cache__advanced_cache'] ) ) {
 
         if ( ($msg = weaverii_sc_check_quick_cache()) != '') {
             echo '<p><span style="color:red;fong-weight:bold;">WARNING!</span>
