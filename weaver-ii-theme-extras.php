@@ -5,7 +5,7 @@ Plugin URI: http://weavertheme.com
 Description: Weaver II Theme Extras - Adds shortcodes and other features to the Weaver II theme.
 Author: Bruce Wampler
 Author URI: http://weavertheme.com/about
-Version: 2.1.6
+Version: 2.2.4
 License: GPL
 
 GPL License: http://www.opensource.org/licenses/gpl-license.php
