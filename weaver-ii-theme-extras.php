@@ -5,7 +5,7 @@ Plugin URI: http://weavertheme.com
 Description: Weaver II Theme Extras - Adds shortcodes and other features to the Weaver II theme.
 Author: Bruce Wampler
 Author URI: http://weavertheme.com/about
-Version: 2.1.2
+Version: 2.1.6
 License: GPL
 
 GPL License: http://www.opensource.org/licenses/gpl-license.php
@@ -15,7 +15,8 @@ WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
-define ('WEAVER_II_EXTRAS_VERSION','Weaver II Extras Version 2.1.2');
+define ('WEAVER_II_EXTRAS_VERSION','Weaver II Extras Version 2.1.6');
+define ('WEAVER_II_EXTRAS_VN', '2.1.6');
 
 $cur_theme = wp_get_theme();
 $parent = $cur_theme->parent(); // might be a child, so see if Weaver II is parent...
@@ -26,6 +27,51 @@ if ( strcmp($cur_theme->Name, 'Weaver II' ) == 0
     ( strcmp($cur_theme->Name, 'Weaver II Pro' ) == 0
     && (version_compare($cur_theme->Version, '1.9' , '<')
         || version_compare($cur_theme->Version, '2.0.90' , '>='))) ) {  // only need this for Weaver II free or old Pro
+
+// ===============================>>> Handle loading scripts <<<===============================
+
+    add_action( 'plugins_loaded', 'weaverii_tx_plugins_loaded');
+
+function weaverii_tx_plugins_loaded() {
+    add_action( 'wp_enqueue_scripts', 'weaverii_tx_enqueue_scripts' );
+    add_action( 'wp_footer','weaverii_tx_the_footer', 9);	// make it 9 so we can dequeue scripts
+    add_action( 'wp_footer','weaverii_tx_the_footer_late', 99);	// make it 12 to load late
+}
+
+// ========================================= >>> atw_slider_enqueue_scripts <<< ===============================
+
+function weaverii_tx_enqueue_scripts() {	// enqueue runtime scripts
+
+    $at_end = true;
+
+    wp_enqueue_script('weaverii-tx-fitvids',
+        plugins_url('/includes/fitvids/wvr.fitvids.min.js',__FILE__),array('jquery'),
+        WEAVER_II_EXTRAS_VN, $at_end);
+}
+
+// ========================================= >>> atw_slider_the_footer <<< ===============================
+
+function weaverii_tx_the_footer() {
+    $use_fitvids = false;
+    if (function_exists( 'weaverii_getopt' )) {
+        if ( weaverii_getopt( 'use_fitvids' ) ) {
+            $use_fitvids = true;
+        }
+
+    }
+    if (!$use_fitvids && !isset($GLOBALS['wvr_videos_count']) ) {  // dequeue scripts if not used
+        wp_dequeue_script( 'weaverii-tx-fitvids' );
+        return;
+    }
+}
+
+function weaverii_tx_the_footer_late() {
+    if (function_exists( 'weaverii_getopt' )) {
+        if ( weaverii_getopt( 'use_fitvids' ) ) {
+            echo "<script type='text/javascript'>jQuery('#wrapper').fitVids();</script>\n";
+        }
+    }
+}
 
 /* PART 1 - Extras hooks - market, update */
 

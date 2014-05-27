@@ -5,7 +5,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: weaver theme, settings, save, subthemes
 Requires at least: 3.5
 Tested up to: 3.7
-Stable tag: 2.1.2
+Stable tag: 2.1.6
 
 == Description ==
 
@@ -83,6 +83,12 @@ backup save are marked with a diamond in the admin options pages.
 
 
 == Changelog ==
+
+== 2.1.5 ==
+* Added FitVids support. Ratio now automatic.
+
+== 2.1.4 ==
+* Fixed Quick Cache detection bug - did not change how it worked, just detect message
 
 == 2.1.2 ==
 * Added automatic support for Quick Cache
