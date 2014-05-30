@@ -504,7 +504,7 @@ function weaverii_sc_youtube($args = '') {
     if (weaverii_use_mobile('mobile') && $percent < 90) $percent = 99;
 
     $allowfull = $fullscreen ? ' allowfullscreen' : '';
-    $cntr1 = $center ? '<div class="wvr-fitvids" style="text-align:center;max-width:' . $percent . '%;">'
+    $cntr1 = $center ? '<div class="wvr-fitvids" style="margin:0 auto;max-width:' . $percent . '%;">'
                      : '<div class="wvr-fitvids" max-width:' . $percent . '%;">';
     $cntr2 = '</div>';
 
@@ -576,7 +576,7 @@ function weaverii_sc_vimeo($args = '') {
 
     // $vert = $sd ? 0.75 : 0.5625;
     // if ($ratio) $vert = $ratio;
-    $cntr1 = $center ? '<div class="wvr-fitvids" style="text-align:center;max-width:' . $percent. '%;">'
+    $cntr1 = $center ? '<div class="wvr-fitvids" style="margin:0 auto;max-width:' . $percent. '%;">'
                      : '<div class="wvr-fitvids" style="max-width:' . $percent. '%;">';
     $cntr2 = '</div>';
 
