@@ -5,7 +5,7 @@ Plugin URI: http://weavertheme.com
 Description: Weaver II Theme Extras - Adds shortcodes and other features to the Weaver II theme.
 Author: Bruce Wampler
 Author URI: http://weavertheme.com/about
-Version: 2.2.9
+Version: 2.2.10
 License: GPL
 
 GPL License: http://www.opensource.org/licenses/gpl-license.php
@@ -15,8 +15,8 @@ WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
-define ('WEAVER_II_EXTRAS_VERSION','Weaver II Extras Version 2.2.9');
-define ('WEAVER_II_EXTRAS_VN', '2.2.9');
+define ('WEAVER_II_EXTRAS_VERSION','Weaver II Extras Version 2.2.10');
+define ('WEAVER_II_EXTRAS_VN', '2.2.10');
 
 $cur_theme = wp_get_theme();
 $parent = $cur_theme->parent(); // might be a child, so see if Weaver II is parent...
@@ -149,6 +149,10 @@ function weaverii_child_process_options() {
 }
 
 // ========= add actions and filters from admin lib
+
+function weaverii_tx_head_opts( $args ) {
+    return true;
+}
 
 add_filter('weaverii_child_extrathemes','weaverii_child_extrathemes_filter');
 function weaverii_child_extrathemes_filter($msg) {

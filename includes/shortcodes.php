@@ -505,7 +505,7 @@ function weaverii_sc_youtube($args = '') {
 
     $allowfull = $fullscreen ? ' allowfullscreen' : '';
     $cntr1 = $center ? '<div class="wvr-fitvids" style="margin:0 auto;max-width:' . $percent . '%;">'
-                     : '<div class="wvr-fitvids" max-width:' . $percent . '%;">';
+                     : '<div class="wvr-fitvids" style="max-width:' . $percent . '%;">';
     $cntr2 = '</div>';
 
     return "\n" . $cntr1 . '<iframe src="' . $url
