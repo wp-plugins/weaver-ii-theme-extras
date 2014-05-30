@@ -5,7 +5,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: weaver theme, settings, save, subthemes
 Requires at least: 3.5
 Tested up to: 3.7
-Stable tag: 2.2.9
+Stable tag: 2.1.10
 
 == Description ==
 
@@ -83,6 +83,10 @@ backup save are marked with a diamond in the admin options pages.
 
 
 == Changelog ==
+
+== 2.2.10 ==
+* Fixed video centering/percent issue
+* Added support for new WordPress standards for <HEAD> Section option.
 
 == 2.1.8 ==
 * Added FitVids support. Ratio now automatic.
