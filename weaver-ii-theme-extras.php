@@ -5,7 +5,7 @@ Plugin URI: http://weavertheme.com
 Description: Weaver II Theme Extras - Adds shortcodes and other features to the Weaver II theme.
 Author: Bruce Wampler
 Author URI: http://weavertheme.com/about
-Version: 2.2.10
+Version: 2.3
 License: GPL
 
 GPL License: http://www.opensource.org/licenses/gpl-license.php
@@ -15,8 +15,8 @@ WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
-define ('WEAVER_II_EXTRAS_VERSION','Weaver II Extras Version 2.2.10');
-define ('WEAVER_II_EXTRAS_VN', '2.2.10');
+define ('WEAVER_II_EXTRAS_VERSION','Weaver II Extras Version 2.3');
+define ('WEAVER_II_EXTRAS_VN', '2.3');
 
 $cur_theme = wp_get_theme();
 $parent = $cur_theme->parent(); // might be a child, so see if Weaver II is parent...
@@ -36,9 +36,23 @@ function weaverii_tx_plugins_loaded() {
     add_action( 'wp_enqueue_scripts', 'weaverii_tx_enqueue_scripts' );
     add_action( 'wp_footer','weaverii_tx_the_footer', 9);	// make it 9 so we can dequeue scripts
     add_action( 'wp_footer','weaverii_tx_the_footer_late', 99);	// make it 12 to load late
+    register_deactivation_hook( __FILE__, 'weaverii_tx_deactivate' );
 }
 
-// ========================================= >>> atw_slider_enqueue_scripts <<< ===============================
+
+// ========================================= >>> weaverii_tx_deactivate <<< ===============================
+
+function weaverii_tx_deactivate() {	// deactivate
+
+    $ac_dir = WP_CONTENT_DIR . '/ac-plugins';
+
+    $ac_file = $ac_dir . '/weaver-ac-plugin.php';
+
+    unlink ( $ac_file );        // delete the file if there...
+
+}
+
+// ========================================= >>> weaverii_tx_enqueue_scripts <<< ===============================
 
 function weaverii_tx_enqueue_scripts() {	// enqueue runtime scripts
 
@@ -49,7 +63,7 @@ function weaverii_tx_enqueue_scripts() {	// enqueue runtime scripts
         WEAVER_II_EXTRAS_VN, $at_end);
 }
 
-// ========================================= >>> atw_slider_the_footer <<< ===============================
+// ========================================= >>> weaverii_tx_the_footer <<< ===============================
 
 function weaverii_tx_the_footer() {
     $use_fitvids = false;
@@ -207,4 +221,42 @@ require_once(dirname( __FILE__ ) . '/includes/shortcodes.php');	// standard runt
 } // end not using Weaver II 1.x
 
 } // end of check if using Weaver II
+
+
+if ( strcmp($cur_theme->Name, 'Weaver II' ) == 0 || strcmp($cur_theme->Name, 'Weaver II Pro' ) == 0 ) {
+	if ( version_compare($cur_theme->Version, '2.2' , '<') ) {
+
+	if ( strcmp($cur_theme->Name, 'Weaver II' ) == 0 ) {		// let's add the autoupdater for Weaver II (but not pro)
+		require_once('wp-updates-theme-1373.php');
+	$theme = basename(get_template_directory());
+	new WPUpdatesThemeUpdater_1373( 'http://wp-updates.com/api/2/theme', $theme );
+
+	}
+
+
+function weaverii_tx_admin_notice() {
+
+	$cur_theme = wp_get_theme();
+	$parent = $cur_theme->parent(); // might be a child, so see if Weaver II is parent...
+	if ($parent)
+		$cur_theme = $parent;
+?>
+<div class="updated">
+<p><strong>A newer version of <em><?php echo $cur_theme->Name; ?></em> is available.
+Please visit <a href="//weavertheme.com/update-weaver-ii" target="_blank"><span style="font-size:120%;text-decoration:underline;">Update Weaver II</span></a>
+for complete instructions.</strong><br />
+Updating to the new <em>Weaver II</em> version requires using the WordPress automatic theme update process
+(open the Dashboard:Updates menu), or an optional simple, one-time manual update.
+The new version has some important tweaks, as well as support for the standard automatic process for future updates.
+<small>Because the update is so important, this notice will remain visible until
+you perform the update.</small>
+</div>
+<?php
+}
+add_action('admin_notices', 'weaverii_tx_admin_notice');
+
+
+	}
+}
+
 ?>

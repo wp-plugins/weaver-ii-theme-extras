@@ -3,9 +3,9 @@ Contributors: Bruce Wampler
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: weaver theme, settings, save, subthemes
-Requires at least: 3.5
-Tested up to: 3.7
-Stable tag: 2.1.10
+Requires at least: 3.6
+Tested up to: 4.2
+Stable tag: 2.3
 
 == Description ==
 
@@ -83,19 +83,26 @@ backup save are marked with a diamond in the admin options pages.
 
 
 == Changelog ==
+= 2.3 =
+* Added notification notice for new Weaver II 2.2 (or later) version
+* Works with both Zen Cache and Quick Cache
 
-== 2.2.10 ==
+= 2.2.12 =
+* Fixed tested to tag
+* Fixed issue with Quick Cache - will now delete the "AC" file for QC upon plugin deactivation
+
+= 2.2.10 =
 * Fixed video centering/percent issue
 * Added support for new WordPress standards for <HEAD> Section option.
 
-== 2.1.8 ==
+= 2.1.8 =
 * Added FitVids support. Ratio now automatic.
 * Fixed video center option
 
-== 2.1.4 ==
+= 2.1.4 =
 * Fixed Quick Cache detection bug - did not change how it worked, just detect message
 
-== 2.1.2 ==
+= 2.1.2 =
 * Added automatic support for Quick Cache
 * Refactored some code to load only at admin time
 
@@ -112,10 +119,8 @@ backup save are marked with a diamond in the admin options pages.
 * Save/Upload theme to your computer removed from plugin - now included in all Weaver II versions
 
 = 1.2 =
-
 * Added Add-on Theme support
 * Added self-update to Save/Restore tab
 
 = 1.0 =
-
 First release.
